@@ -5,7 +5,8 @@
   "description": "A simulated cybersecurity gateway for satellite ground-station commands",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "verify": "node scripts/verify-system.js"
   },
   "engines": {
     "node": ">=18"
