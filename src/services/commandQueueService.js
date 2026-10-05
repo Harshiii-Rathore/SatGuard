@@ -6,13 +6,24 @@ const spacecraftService = require("./spacecraftService");
 let commands = [];
 let nextSequence = 1;
 
-function enqueue(command) {
+function enqueue(command, { preserveId = false } = {}) {
   const validation = validateCommand(command);
   if (!validation.valid) {
     return { success: false, error: validation.error };
   }
 
+  if (
+    preserveId &&
+    commands.some((entry) => entry.id === validation.command.id)
+  ) {
+    return failure(
+      "COMMAND_ID_CONFLICT",
+      "A command with this ID already exists in the queue history",
+    );
+  }
+
   const queuedCommand = createCommandInstance({
+    id: preserveId ? validation.command.id : undefined,
     type: validation.command.type,
     parameters: validation.command.parameters,
     sequence: nextSequence++,

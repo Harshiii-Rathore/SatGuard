@@ -9,7 +9,9 @@ function validateCommand(command) {
     return invalid("INVALID_COMMAND", "Command type must be a string");
   }
 
-  const definition = COMMAND_DEFINITIONS[command.type];
+  const definition = Object.hasOwn(COMMAND_DEFINITIONS, command.type)
+    ? COMMAND_DEFINITIONS[command.type]
+    : null;
   if (!definition) {
     return invalid("UNKNOWN_COMMAND", `Unknown command type: ${command.type}`);
   }

@@ -4,6 +4,7 @@ const spacecraftRoutes = require("./routes/spacecraft.routes");
 const consequenceRoutes = require("./routes/consequence.routes");
 const executionPlanRoutes = require("./routes/executionPlan.routes");
 const commandQueueRoutes = require("./routes/commandQueue.routes");
+const securityGatewayRoutes = require("./routes/securityGateway.routes");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(spacecraftRoutes);
 app.use(consequenceRoutes);
 app.use(executionPlanRoutes);
 app.use(commandQueueRoutes);
+app.use(securityGatewayRoutes);
 
 app.use((error, request, response, next) => {
 	if (response.headersSent) {
