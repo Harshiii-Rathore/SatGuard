@@ -10,9 +10,11 @@ function createInitialSpacecraftState() {
     temperature: 21,
     orientation: "NADIR",
     camera: "OFF",
+    heater: "OFF",
     radio: "IDLE",
-    antenna: "STOWED",
+    antenna: "DEPLOYED",
     missionPhase: MISSION_PHASES.IDLE,
+    imagesCaptured: 0,
   };
 }
 

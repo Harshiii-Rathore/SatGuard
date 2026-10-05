@@ -1,5 +1,12 @@
 const { COMMAND_TYPES } = require("./commandTypes");
 
+const ORIENTATION_VALUES = Object.freeze([
+  "NADIR",
+  "ZENITH",
+  "SUN_POINT",
+  "ANTENNA_POINTING",
+]);
+
 const COMMAND_DEFINITIONS = Object.freeze({
   [COMMAND_TYPES.PING]: Object.freeze({
     type: COMMAND_TYPES.PING,
@@ -48,6 +55,12 @@ const COMMAND_DEFINITIONS = Object.freeze({
     requiredRole: "MISSION_CONTROLLER",
     critical: true,
     requiredParameters: ["orientation"],
+    parameterSchema: Object.freeze({
+      orientation: Object.freeze({
+        type: "string",
+        allowedValues: ORIENTATION_VALUES,
+      }),
+    }),
   }),
   [COMMAND_TYPES.ENTER_SAFE_MODE]: Object.freeze({
     type: COMMAND_TYPES.ENTER_SAFE_MODE,
@@ -79,4 +92,8 @@ function createCommandInstance({
   };
 }
 
-module.exports = { COMMAND_DEFINITIONS, createCommandInstance };
+module.exports = {
+  COMMAND_DEFINITIONS,
+  ORIENTATION_VALUES,
+  createCommandInstance,
+};
