@@ -1,6 +1,7 @@
 const express = require("express");
 const healthRoutes = require("./routes/health.routes");
 const spacecraftRoutes = require("./routes/spacecraft.routes");
+const consequenceRoutes = require("./routes/consequence.routes");
 const commandQueueRoutes = require("./routes/commandQueue.routes");
 
 const app = express();
@@ -8,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(healthRoutes);
 app.use(spacecraftRoutes);
+app.use(consequenceRoutes);
 app.use(commandQueueRoutes);
 
 app.use((error, request, response, next) => {

@@ -1,5 +1,5 @@
 const { createInitialSpacecraftState } = require("../domain/spacecraft/spacecraftState");
-const { executeCommand: applyCommand } = require("../domain/spacecraft/commandExecutor");
+const { transitionCommand } = require("../domain/spacecraft/commandExecutor");
 const { validateCommand } = require("../domain/commands/commandValidation");
 
 let currentState = createInitialSpacecraftState();
@@ -19,7 +19,7 @@ function executeCommand(command) {
     };
   }
 
-  const execution = applyCommand(currentState, validation.command);
+  const execution = transitionCommand(currentState, validation.command);
   if (execution.success) {
     currentState = execution.state;
   }

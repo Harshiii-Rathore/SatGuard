@@ -9,7 +9,7 @@ const SAFE_MODE_COMMANDS = new Set([
   COMMAND_TYPES.RECOVER,
 ]);
 
-function executeCommand(state, command) {
+function transitionCommand(state, command) {
   if (state.mode === SPACECRAFT_MODES.SAFE && !SAFE_MODE_COMMANDS.has(command.type)) {
     return failure(
       state,
@@ -110,4 +110,7 @@ function failure(state, code, message) {
   return { success: false, state: { ...state }, error: { code, message } };
 }
 
-module.exports = { executeCommand };
+module.exports = {
+  transitionCommand,
+  executeCommand: transitionCommand,
+};

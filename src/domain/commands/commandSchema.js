@@ -38,6 +38,7 @@ const COMMAND_DEFINITIONS = Object.freeze({
     type: COMMAND_TYPES.HIGH_POWER_TRANSMISSION,
     requiredRole: "MISSION_CONTROLLER",
     critical: true,
+    requiresCommunication: true,
     requiredParameters: [],
   }),
   [COMMAND_TYPES.HEATER_ON]: Object.freeze({
