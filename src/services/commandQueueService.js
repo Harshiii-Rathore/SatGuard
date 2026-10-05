@@ -6,10 +6,18 @@ const spacecraftService = require("./spacecraftService");
 let commands = [];
 let nextSequence = 1;
 
-function enqueue(command, { preserveId = false } = {}) {
+function enqueue(command, {
+  preserveId = false,
+  status = COMMAND_STATUSES.QUEUED,
+  holdDetails,
+} = {}) {
   const validation = validateCommand(command);
   if (!validation.valid) {
     return { success: false, error: validation.error };
+  }
+
+  if (![COMMAND_STATUSES.QUEUED, COMMAND_STATUSES.HELD].includes(status)) {
+    return failure("INVALID_QUEUE_OPERATION", `Unsupported initial queue status: ${status}`);
   }
 
   if (
@@ -26,8 +34,13 @@ function enqueue(command, { preserveId = false } = {}) {
     id: preserveId ? validation.command.id : undefined,
     type: validation.command.type,
     parameters: validation.command.parameters,
+    status,
     sequence: nextSequence++,
   });
+
+  if (status === COMMAND_STATUSES.HELD) {
+    queuedCommand.holdDetails = structuredClone(holdDetails);
+  }
 
   commands.push(queuedCommand);
   return { success: true, command: cloneCommand(queuedCommand) };
@@ -36,6 +49,12 @@ function enqueue(command, { preserveId = false } = {}) {
 function getAll() {
   return commands
     .filter((command) => command.status === COMMAND_STATUSES.QUEUED)
+    .map(cloneCommand);
+}
+
+function getHeld() {
+  return commands
+    .filter((command) => command.status === COMMAND_STATUSES.HELD)
     .map(cloneCommand);
 }
 
@@ -104,6 +123,7 @@ function updateStatus(id, status) {
 
 function statusFailure(command) {
   const errorByStatus = {
+    [COMMAND_STATUSES.HELD]: ["COMMAND_ON_HOLD", "Command is held and cannot be executed"],
     [COMMAND_STATUSES.EXECUTED]: [
       "COMMAND_ALREADY_EXECUTED",
       "Command has already been executed",
@@ -136,6 +156,7 @@ function cloneCommand(command) {
 module.exports = {
   enqueue,
   getAll,
+  getHeld,
   getById,
   getSnapshot,
   cancel,

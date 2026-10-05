@@ -7,6 +7,10 @@ router.get("/commands/queue", (request, response) => {
   response.json({ commands: commandQueueService.getAll() });
 });
 
+router.get("/commands/held", (request, response) => {
+  response.json({ commands: commandQueueService.getHeld() });
+});
+
 router.post("/commands/queue", (request, response) => {
   const outcome = commandQueueService.enqueue(request.body);
   if (!outcome.success) {
