@@ -169,7 +169,8 @@ function selectDecision({
   }
 
   if (
-    currentSeriousEventCount + currentSeriousSignals >= SERIOUS_EVENTS_FOR_RESTRICTED
+    currentSeriousEventCount + currentSeriousSignals >= SERIOUS_EVENTS_FOR_RESTRICTED &&
+    !RESTRICTED_ALLOWED_COMMANDS.includes(commandType)
   ) {
     return decision(
       "RESTRICTED",
