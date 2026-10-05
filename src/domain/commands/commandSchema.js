@@ -1,4 +1,6 @@
 const { COMMAND_TYPES } = require("./commandTypes");
+const { randomUUID } = require("node:crypto");
+const { COMMAND_STATUSES } = require("./commandStatus");
 
 const ORIENTATION_VALUES = Object.freeze([
   "NADIR",
@@ -77,19 +79,28 @@ const COMMAND_DEFINITIONS = Object.freeze({
 });
 
 function createCommandInstance({
-  id,
+  id = randomUUID(),
   type,
   parameters = {},
+  createdAt,
+  status = COMMAND_STATUSES.QUEUED,
+  sequence = null,
   requestedBy,
-  requestedAt = new Date().toISOString(),
+  requestedAt,
 }) {
-  return {
+  const command = {
     id,
     type,
-    parameters: { ...parameters },
-    requestedBy,
-    requestedAt,
+    parameters: structuredClone(parameters),
+    createdAt: createdAt ?? requestedAt ?? new Date().toISOString(),
+    status,
+    sequence,
   };
+
+  if (requestedBy !== undefined) command.requestedBy = requestedBy;
+  if (requestedAt !== undefined) command.requestedAt = requestedAt;
+
+  return command;
 }
 
 module.exports = {

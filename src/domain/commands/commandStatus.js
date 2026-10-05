@@ -1,0 +1,8 @@
+const COMMAND_STATUSES = Object.freeze({
+  QUEUED: "QUEUED",
+  EXECUTED: "EXECUTED",
+  CANCELLED: "CANCELLED",
+  FAILED: "FAILED",
+});
+
+module.exports = { COMMAND_STATUSES };
